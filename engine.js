@@ -1,4 +1,5 @@
 const fs = require("fs");
+const cliijs = require("./module/cliijs");
 
 // 演算子名、関数名をキーに、その引数の長さと、処理を記述する。
 var functions = {
@@ -61,6 +62,11 @@ var functions = {
   "print": {
     length: 1,
     body: params => console.log("stdout", params[0])
+  },
+  // if分岐
+  "if": {
+    length: 2,
+    body: params => {if(params[1]) {params[2]}}
   }
 };
 
@@ -152,7 +158,6 @@ function parse(exp) {
   for (var i = 0; i < exp.length; i++) {
     // 現在見ている要素
     var e = exp[i];
-
     if (e != ")") {
       // 閉じ括弧が現れるまでは、そのままpushする。
       stack.push(e);
@@ -270,5 +275,9 @@ var src = "" + srcfile;
 console.log(src);
 
 var env = new Env(functions);
-env.execute(src);
-
+try{
+  env.execute(src);
+}
+catch(error){
+  console.log(cliijs.error_message(error))
+}

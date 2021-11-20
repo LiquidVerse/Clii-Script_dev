@@ -1,5 +1,6 @@
 s = 1 ;
-while ( s < 100 )
-  s = s + 5
-  print s
-end_while
+x = 2 ; 
+
+if (s == 1) {
+  print (x + s) ;
+}
