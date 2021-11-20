@@ -271,3 +271,4 @@ console.log(src);
 
 var env = new Env(functions);
 env.execute(src);
+
