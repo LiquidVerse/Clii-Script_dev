@@ -272,7 +272,7 @@ var src = "" +
   "end_while";
 console.log(src);
 
-var src2 = fs.readFileSync( "test.txt" );
+var src2 = fs.readFileSync( "test.clii" );
 
 var src3 = "" + src2;
 
