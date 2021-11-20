@@ -264,17 +264,10 @@ Env.prototype = {
   }
 };
 
-var src = "" +
-  "x = 1 ; " + "\n" +
-  "while ( x < 100 )" + "\n" +
-  "  x = x + 5" + "\n" +
-  "  print x" + "\n" +
-  "end_while";
+var srcfile = fs.readFileSync( "test.clii" );
+
+var src = "" + srcfile;
 console.log(src);
 
-var src2 = fs.readFileSync( "test.clii" );
-
-var src3 = "" + src2;
-
 var env = new Env(functions);
-env.execute(src3);
+env.execute(src);
