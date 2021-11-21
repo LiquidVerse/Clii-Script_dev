@@ -1,6 +1,5 @@
 s = 1 ;
 x = 2 ; 
 
-if (s == 1) {
-  print (x + s) ;
-}
+
+return s ;

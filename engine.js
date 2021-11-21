@@ -66,7 +66,12 @@ var functions = {
   // if分岐
   "if": {
     length: 2,
-    body: params => {if(params[1]) {params[2]}}
+    body: params => {if(params[0]) {params[1]}}
+  },
+  // Return
+  "return": {
+    length: 1,
+    body: params => {return params[0]}
   }
 };
 
@@ -269,15 +274,11 @@ Env.prototype = {
   }
 };
 
-var srcfile = fs.readFileSync( "test.clii" );
-
-var src = "" + srcfile;
-console.log(src);
-
 var env = new Env(functions);
-try{
-  env.execute(src);
-}
-catch(error){
-  console.log(cliijs.error_message(error))
+
+module.exports = {
+  runscript: function(srccode){
+    var src = "" + srccode;
+    env.execute(src);
+  }
 }
