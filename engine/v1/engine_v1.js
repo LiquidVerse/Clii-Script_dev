@@ -1,6 +1,9 @@
 const fs = require("fs");
-const cliijs = require("./module/cliijs");
+const cliijs = require("../../module/cliijs");
 
+var return_obj;
+var function_obj = [0,0];
+var arg;
 // 演算子名、関数名をキーに、その引数の長さと、処理を記述する。
 var functions = {
   // 加算
@@ -63,15 +66,19 @@ var functions = {
     length: 1,
     body: params => console.log("stdout", params[0])
   },
-  // if分岐
   "if": {
-    length: 2,
-    body: params => {if(params[0]) {params[1]}}
+    length: 3,
+    body: params => {if (params[0] == params[1]) console.log("OK")}
   },
-  // Return
+  // if分岐
+  "function": {
+    length: 2,
+    body: params => {function_obj[0] = params[0],function_obj[1] = params[1]}
+  },
+  // if分岐
   "return": {
     length: 1,
-    body: params => {return params[0]}
+    body: params => {return_obj = params[0]}
   }
 };
 
@@ -212,6 +219,7 @@ Env.prototype = {
   execute: function(src) {
     // 字句で区切る。改行はセミコロンとする。
     var words = src.split("\n").join(" ; ").split("(").join(" ( ").split(")").join(" ) ").split(" ").filter(x => x.length > 0);
+    
     // ポーランド記法に変換
     var rpn_list = flatten(parse(words));
     //逆ポーランド記法に変換
@@ -245,15 +253,15 @@ Env.prototype = {
         this.locals[this.stack.pop()] = value;
         // 式なので、値を返す。
         this.stack.push(value);
-      } else if (e == "if" || e == "while") {
-        // if文かwhile文が現れた場合、条件に合致しなければend_ifおよびend_whileまで処理を飛ばす。
+      } else if (e == "while" || e == "if") {
+        // if文かwhile文か関数が現れた場合、条件に合致しなければend_ifおよびend_whileまで処理を飛ばす。
         var condition = this.stack.pop();
         if (!condition) {
           while (("end_" + e) != rpn_list[++i]);
         }
 
-      } else if (e == ";" || e == "end_if") {
-        // 何もしない
+      } else if (e == "end_if") {
+
       } else if (e == "end_while") {
         // 前回whileまで戻す。
         while (--i >= 0 && "while" != rpn_list[i]);
@@ -280,5 +288,6 @@ module.exports = {
   runscript: function(srccode){
     var src = "" + srccode;
     env.execute(src);
+    return return_obj;
   }
 }

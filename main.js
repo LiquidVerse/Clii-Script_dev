@@ -1,10 +1,12 @@
-const fs = require('fs')
-const clii_core = require('./engine')
+let MyLang = require('./engine/clilite/clilite_engine')
+
+let lang = new MyLang()
+const fs = require('fs');
 
 var srcfile = fs.readFileSync( "test.clii" );
 
-// Returnのテスト用
-// console.log(clii_core.runscript(srcfile));
-
-// JavaScriptからCliiScriptを実行する関数
-clii_core.runscript(srcfile);
+let result = lang.exec(srcfile + "")
+console.log(
+    result === srcfile.expect ? '[OK]' : '[NG]',
+    srcfile.input, '=', result
+)
