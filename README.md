@@ -1,2 +1,2 @@
 # Clii-Script
-ん？
+ん
